@@ -1,0 +1,181 @@
+# React Aria
+
+## What is React Aria?
+
+React Aria is a library of React Hooks that provides accessible UI primitives for your design system. It's part of the Adobe React Spectrum project and helps developers build accessible, high-quality UI components that work across platforms and input methods.
+
+React Aria implements behavior and interactions according to WAI-ARIA Authoring Practices, including full screen reader and keyboard navigation support. It's designed to be framework agnostic, with styling and rendering handled by you or your component library.
+
+## Key Features
+
+- Collection of React Hooks for accessible UI primitives
+- Framework agnostic (handles behavior, not styling)
+- Fully accessible by default (WCAG 2.1 & WAI-ARIA)
+- Support for multiple input methods (mouse, touch, keyboard, screen reader)
+- Internationalization support
+- Virtual scrolling and virtualized collections
+- Extensible and adaptable to any design system
+
+## Core Concepts
+
+- **Hooks-based API**: Provides behavior and accessibility through React Hooks
+- **Design System Agnostic**: Handles behavior and interaction, while leaving styling to you
+- **Component Architecture**: Split into three layers (React Aria, React Stately, React Spectrum)
+- **Accessibility First**: Implements WAI-ARIA practices by default
+
+## Installation
+
+```bash
+npm install @react-aria/[package-name]
+```
+
+## Common Hooks
+
+| Hook | Purpose |
+|------|---------|
+| `useButton` | Creates an accessible button |
+| `useCheckbox` | Creates an accessible checkbox |
+| `useDialog` | Creates an accessible dialog or modal |
+| `useFocusRing` | Manages focus states for keyboard navigation |
+| `useHover` | Manages hover states |
+| `useKeyboard` | Handles keyboard interactions |
+| `useListBox` | Creates an accessible listbox |
+| `useMenu` | Creates an accessible menu |
+| `useOverlay` | Creates an accessible overlay |
+| `useSelect` | Creates an accessible select/dropdown |
+| `useSlider` | Creates an accessible slider |
+| `useSwitch` | Creates an accessible switch toggle |
+| `useTab` | Creates accessible tabs |
+| `useTextField` | Creates an accessible text input |
+
+## Example Usage
+
+### Button Component
+
+```jsx
+import {useButton} from '@react-aria/button';
+import {useRef} from 'react';
+
+function Button(props) {
+  let ref = useRef();
+  let {buttonProps} = useButton(props, ref);
+  
+  return (
+    <button {...buttonProps} ref={ref} className="my-button">
+      {props.children}
+    </button>
+  );
+}
+```
+
+### Select Component
+
+```jsx
+import {useSelect, HiddenSelect} from '@react-aria/select';
+import {useButton} from '@react-aria/button';
+import {useListBox, useOption} from '@react-aria/listbox';
+import {useRef} from 'react';
+
+function Select(props) {
+  let state = useSelectState(props);
+  let ref = useRef();
+  let {labelProps, triggerProps, valueProps, menuProps} = useSelect(props, state, ref);
+
+  return (
+    <div className="select-container">
+      <div {...labelProps}>{props.label}</div>
+      <HiddenSelect
+        state={state}
+        triggerRef={ref}
+        label={props.label}
+        name={props.name}
+      />
+      <button
+        {...triggerProps}
+        ref={ref}
+        className="select-trigger">
+        <span {...valueProps}>
+          {state.selectedItem
+            ? state.selectedItem.rendered
+            : "Select an option"}
+        </span>
+        <span aria-hidden="true">▼</span>
+      </button>
+      {state.isOpen && (
+        <ListBox
+          {...menuProps}
+          state={state}
+        />
+      )}
+    </div>
+  );
+}
+```
+
+## Key Differences from Other Libraries
+
+Unlike component libraries that provide both styling and behavior, React Aria focuses solely on behavior and accessibility, letting you bring your own styling and design system.
+
+Compared to:
+- **Zag.js**: React Aria is React-specific with a hooks-based API, while Zag.js is framework-agnostic with a state machine approach
+- **DaisyUI**: React Aria doesn't include styling, whereas DaisyUI provides pre-styled Tailwind components
+- **Material UI/Chakra UI**: These provide complete styled components, while React Aria provides the behavioral building blocks
+
+## Resources
+
+- [Official Documentation](https://react-spectrum.adobe.com/react-aria/)
+- [GitHub Repository](https://github.com/adobe/react-spectrum)
+- [Storybook Examples](https://react-spectrum.adobe.com/react-aria/examples.html)
+
+## Components List
+
+### Interactions
+- Button
+- ToggleButton
+- Checkbox
+- Radio
+- Switch
+- Link
+
+### Forms
+- TextField
+- NumberField
+- SearchField
+- TextArea
+- ComboBox
+- Select
+- Slider
+- DatePicker
+- DateField
+- TimeField
+- Calendar
+
+### Collections
+- ListBox
+- Menu
+- Table
+- Grid
+- TreeView
+
+### Overlays
+- Dialog
+- Popover
+- Tooltip
+- OverlayTrigger
+
+### Navigation
+- Tabs
+- Breadcrumbs
+
+### Status
+- Meter
+- ProgressBar
+- StatusLight
+
+### Utilities
+- FocusScope
+- FocusRing
+- Keyboard
+- SSR
+- I18n
+- VisuallyHidden
